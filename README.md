@@ -1,5 +1,9 @@
 # VR Ticket Miner
 
+VR Ticket Miner is an open-source "vibe" project; bug reports, documentation improvements, and code changes are welcome.
+
+## Overview
+
 Find the cheapest VR train ticket for your route by scanning seven days at once, instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
 
 You pick origin, destination, passenger type (currently only adult or student), and when you need to **arrive**. The miner queries each of the next seven days, keeps only trips that land inside a four-hour arrival window and prints the cheapest option per day plus the best deal overall.
@@ -20,7 +24,9 @@ Then:
 vr-miner search --from HKI --to TKU --arrive 09:30 --passenger student
 ```
 
-Prefer a form? Open [`web/index.html`](web/index.html) in a browser. It builds the command for you.
+### Prefer a generated command instead?
+
+Open [`https://ottom1.github.io/VR-ticket-miner/`](https://ottom1.github.io/VR-ticket-miner/) in a browser.
 
 // During development, prefix with `npm run dev --` instead of calling `vr-miner` directly.
 
