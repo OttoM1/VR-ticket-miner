@@ -1,0 +1,13 @@
+node_modules/
+dev_tokens/
+dist/
+*.log
+.env
+.env.*
+.DS_Store
+playwright-report/
+test-results/
+vr-*.js
+chunk-*.js
+scripts/capture-vr-api.mjs
+scripts/extract-gql.mjs
