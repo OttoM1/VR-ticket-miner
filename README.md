@@ -1,8 +1,8 @@
 # VR Ticket Miner
 
-Find the cheapest VR train ticket for your route by scanning seven days at once — instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
+Find the cheapest VR train ticket for your route by scanning seven days at once, instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
 
-You pick origin, destination, passenger type (adult or student), and when you need to **arrive**. The miner queries each of the next seven days, keeps only trips that land inside a four-hour arrival window and prints the cheapest option per day plus the best deal overall.
+You pick origin, destination, passenger type (currently only adult or student), and when you need to **arrive**. The miner queries each of the next seven days, keeps only trips that land inside a four-hour arrival window and prints the cheapest option per day plus the best deal overall.
 
 ## Install for daily use
 
@@ -57,4 +57,4 @@ npm run lint
 
 MIT
 
--- OttoM1 --
+-- OttoM1 & Cursor --
