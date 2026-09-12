@@ -47,7 +47,7 @@ Open [`https://ottom1.github.io/VR-ticket-miner/`](https://ottom1.github.io/VR-t
 
 Note: (this needs to be done only once, not everytime you want to use the tool)
 
-- `git clone https://github.com/OttoM1/VR-ticket-miner.git``
+- `git clone https://github.com/OttoM1/VR-ticket-miner.git`
 - `cd VR-ticket-miner`
 - `npm install`
 - `npm run build`
