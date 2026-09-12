@@ -2,13 +2,16 @@
 
 VR Ticket Miner is an open-source "vibe" project; bug reports, documentation improvements, and code changes are welcome.
 
+- Current agent prompt pipeline is available at [`agent/`](agent/).
+- Note: The documentation doesn't account for human made code changes.
+
 ## Overview
 
 Find the cheapest VR train ticket for your route by scanning seven days at once, instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
 
 You pick origin, destination, passenger type (currently only adult or student), and when you need to **arrive**. The miner queries each of the next seven days, keeps only trips that land inside a four-hour arrival window and prints the cheapest option per day plus the best deal overall.
 
-## Install for daily use
+## Install & Use
 
 ```bash
 npm install
@@ -40,24 +43,6 @@ For each of seven consecutive days (starting tomorrow, or from `--start`):
 2. Drop anything that arrives outside the window `(target − band, target]`. By default the band is four hours ending at your `--arrive` time — e.g. `--arrive 14:00` keeps arrivals between 10:01 and 14:00.
 3. Take the cheapest remaining trip that day.
 4. After all seven days, highlight the single best price across the week.
-
-### Example with a fixed start date and student fare:
-
-```bash
-npm run dev -- search \
-  --from Helsinki --to Tampere \
-  --arrive 09:30 --passenger student \
-  --start 2026-09-15 --mock
-```
-
-## Project layout
-
-TypeScript CLI under `src/` — `core/` talks to VR (or mocks), `miner/` runs the seven-day loop, `cli/` is the entrypoint. The static command builder lives in `web/`.
-
-```bash
-npm run typecheck
-npm run lint
-```
 
 ## License
 
