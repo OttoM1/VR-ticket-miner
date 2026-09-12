@@ -22,7 +22,11 @@ import type {
 } from "./types.js";
 
 const DEFAULT_DELAY_MS = 800;
-const DAY_COUNT = 7;
+const DAY_COUNT = 14;
+
+//const MAX_DAY_COUNT = 7;
+//const MIN_DAY_COUNT = 7;
+
 
 export class WeekMiner {
   private readonly client: VrClient;

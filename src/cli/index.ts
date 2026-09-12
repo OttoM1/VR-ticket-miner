@@ -19,7 +19,7 @@ program
 program
   .command("search")
   .description(
-    "Search cheapest tickets per day for trips arriving in a 4-hour window"
+    "Search cheapest tickets per day for trips arriving in an 8-hour window"
   )
   .requiredOption(
     "--from <station>",
@@ -40,9 +40,9 @@ program
   )
   .option(
     "--band-hours <n>",
-    "Arrival band width in hours (default: 4)",
+    "Arrival band width in hours (default: 8)",
     (v) => parseInt(v, 10),
-    4
+    8
   )
   .option(
     "--start <date>",

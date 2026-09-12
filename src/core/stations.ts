@@ -28,6 +28,11 @@ const STATIONS: readonly Station[] = [
     aliases: ["oulu"],
   },
   {
+    code: "VS",
+    name: "Vaasa",
+    aliases: ["vaasa", "vs"],
+  },
+  {
     code: "KUO",
     name: "Kuopio",
     aliases: ["kuopio"],

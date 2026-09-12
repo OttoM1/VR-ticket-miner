@@ -56,7 +56,10 @@
     </style>
   </head>
 
-  <body class="min-h-screen bg-black text-paper font-sans antialiased">
+  <body>
+    <div class="media_alert">
+      <strong>Currently not available on this resolution.</strong>
+    </div>
     <div class="pointer-events-none fixed inset-0 bg-black"></div>
 
     <div class="relative mx-auto w-fullpx-4 py-10 sm:px-6 sm:py-14">
@@ -128,7 +131,7 @@
                     id="to"
                     list="stations"
                     type="text"
-                    value="Tampere"
+                    value="Oulu"
                     autocomplete="off"
                     class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
@@ -143,6 +146,10 @@
                 <option value="TKL"></option>
                 <option value="Oulu"></option>
                 <option value="OUL"></option>
+
+                <option value="Vaasa"></option>
+                <option value="VS"></option>
+
                 <option value="Lahti"></option>
                 <option value="LAH"></option>
                 <option value="Jyväskylä"></option>
@@ -179,7 +186,7 @@
                     type="number"
                     min="1"
                     max="12"
-                    value="4"
+                    value="8"
                     class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
                 </div>
@@ -382,8 +389,8 @@
               How the window works
             </h3>
             <p class="mt-2 text-sm leading-relaxed text-fog">
-              With a 4h band and arrive-by 14:00, only trips landing between
-              <span class="text-paper">10:01</span> and
+              With an 8h band and arrive-by 14:00, only trips landing between
+              <span class="text-paper">06:01</span> and
               <span class="text-paper">14:00</span> count. Each day’s cheapest
               match is compared across the week.
             </p>
@@ -464,7 +471,7 @@
         const from = fromInput.value.trim() || "Helsinki";
         const to = toInput.value.trim() || "Tampere";
         const arrive = formatArrive(arriveInput.value);
-        const band = bandInput.value || "4";
+        const band = bandInput.value || "8";
         const start = startInput.value;
         const week = weekInput.value.trim();
         const year = yearInput.value.trim();
@@ -478,7 +485,7 @@
         ];
 
         if (passenger !== "adult") parts.push(`--passenger ${passenger}`);
-        if (band !== "4") parts.push(`--band-hours ${band}`);
+        if (band !== "8") parts.push(`--band-hours ${band}`);
 
         if (week) {
           parts.push(`--week ${week}`);

@@ -21,7 +21,7 @@ export interface TripSearchParams {
   destination: string;
   date: Date;
   passengerType: PassengerCategory;
-  /** Target arrival band filter (4h window ending at target time). */
+  /** Target arrival band filter (8h window ending at target time). */
   arrivalWindow?: ArrivalWindow;
   /** When true, search for return journeys (destination → origin). */
   returnTrip?: boolean;
