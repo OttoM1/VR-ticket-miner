@@ -26,4 +26,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
-- README points to GitHub Pages instead of local `web/` paths.
+- README points to GitHub Pages instead of old `web/` paths.
