@@ -62,7 +62,7 @@ export async function runSearch(opts: SearchCommandOptions): Promise<void> {
     if (!minerOptions.mock) {
       console.log(
         chalk.dim(
-          "Live mode uses Playwright against vr.fi (same flow as junaliput ticket search)."
+          "Live mode uses Playwright against vr.fi"
         )
       );
     }

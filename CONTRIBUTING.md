@@ -6,13 +6,8 @@ VR Ticket Miner is an open-source "vibe" project; bug reports, documentation imp
 
 - [Code of conduct](#code-of-conduct)
 - [Ways to contribute](#ways-to-contribute)
-- [Before you start](#before-you-start)
-- [Development setup](#development-setup)
-- [Making changes](#making-changes)
 - [Pull request process](#pull-request-process)
 - [Reporting issues](#reporting-issues)
-- [Issue labels and triage](#issue-labels-and-triage)
-- [Scope and expectations](#scope-and-expectations)
 
 ## Code of conduct
 

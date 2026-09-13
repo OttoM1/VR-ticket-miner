@@ -30,7 +30,7 @@ const STATIONS: readonly Station[] = [
   {
     code: "VS",
     name: "Vaasa",
-    aliases: ["vaasa", "vasa", "va", "vaa"],
+    aliases: ["vaasa", "vasa", "va", "vaa", "vsa"],
   },
   {
     code: "KUO",
@@ -77,6 +77,27 @@ const STATIONS: readonly Station[] = [
     name: "Riihimäki",
     aliases: ["riihimaki", "riihimäki"],
   },
+
+  {
+    code: "PSL",
+    name: "Pasila",
+    aliases: ["pasila", "böle", "psl"],
+  },
+
+  {
+    code: "TKL",
+    name: "Tikkurila",
+    aliases: ["tikkurila", "tkl", "dickursby"],
+  },
+
+  {
+    code: "SK",
+    name: "Seinäjoki",
+    aliases: ["sk", "sjk", "seinäjoki"],
+  },
+
+
+
 ] as const;
 
 function normalize(input: string): string {
