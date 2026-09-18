@@ -54,7 +54,7 @@ export async function runSearch(opts: SearchCommandOptions): Promise<void> {
     const result = await miner.mine();
 
     spinner.succeed(
-      `Scanned 7 days · ${result.days.filter((d) => !d.error).length} with results in window`
+      `Scanned 14 days · ${result.days.filter((d) => !d.error).length} with results in window`
     );
 
     printWeekSummary(result);

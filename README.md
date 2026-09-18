@@ -33,11 +33,14 @@ Open [`https://ottom1.github.io/VR-ticket-miner/`](https://ottom1.github.io/VR-t
 
 ## How to install & use without IDE
 
-- 1. Install Node.js 20+ [`https://nodejs.org/en/download`](https://nodejs.org/en/download)
-- 2. Open CLI (Terminal on MacOS, Command Prompt on Windows)
-- 3. Install git (if not already) [`https://git-scm.com/install/`](https://git-scm.com/install/)
+- Install Node.js 20+ [`https://nodejs.org/en/download`](https://nodejs.org/en/download)
+- Open CLI (Terminal on MacOS, Command Prompt on Windows)
+- Install git (if not already) [`https://git-scm.com/install/`](https://git-scm.com/install/)
+- Verify:
+- `git -v` (expected: 2.x.x)
+- `node -v` (expected: v20+)
 
-#### 4. then in CLI run these in order:
+#### Then in CLI run these in order:
 
 Note: (this needs to be done only once, not everytime you want to use the tool)
 

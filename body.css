@@ -1,11 +1,34 @@
 body,html {
     overflow-x: hidden;
-    background-color: black;
     min-height: 100svh;
-    background: black;
+    background: rgb(0, 0, 0);
+    background-color: black;
     color: white;
     width: 100vw;
     font-family: sans-serif;
+    }
+    .body {
+        background: transparent;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+top: 0;
+left: 0;
+    }
+    .body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: .24;
+        height: 100%;
+        z-index: 0;
+        background-image: url('/ui/body.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 ::-webkit-scrollbar {
     display: none;

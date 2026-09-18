@@ -51,7 +51,7 @@ export function printWeekSummary(result: WeekMiningResult): void {
     );
     console.log();
   } else {
-    console.log(chalk.yellow("No trips matched the arrival window across these 7 days."));
+    console.log(chalk.yellow("No trips matched the arrival window across these 14 days."));
     console.log();
   }
 

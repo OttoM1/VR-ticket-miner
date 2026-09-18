@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Build vr-miner CLI commands for scanning VR train prices across 14 days."
+      content="Build a VR Ticket Miner search: pick your stations, arrival time, and copy a command you can paste into Terminal."
     />
-    <title>VR Ticket Miner — Command Builder</title>
+    <title>VR Ticket Miner — Search Builder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="body.css" />
@@ -22,13 +22,13 @@
         theme: {
           extend: {
             colors: {
-              ink: "#0a0f0c",
-              panel: "#0f1612",
-              line: "#1e3a2f",
+              ink: "rgb(20, 23, 24)",
+              panel: "rgba(0, 0, 0, 0.49)",
+              line: "rgb(93, 17, 169)",
               lineBright: "#2d5a47",
-              fog: "#8fa89a",
-              paper: "#eef5f0",
-              vr: "#00a651",
+              fog: "rgb(225, 225, 225)",
+              paper: "rgb(225, 225, 225)",
+              vr: "rgb(5, 146, 61)",
               vrDim: "#007a3d",
             },
             fontFamily: {
@@ -57,35 +57,36 @@
   </head>
 
   <body>
+    <div class="body"></div>
     <div class="media_alert">
       <strong>Currently not available on this resolution.</strong>
     </div>
     <div class="pointer-events-none fixed inset-0 bg-black"></div>
 
-    <div class="relative mx-auto w-fullpx-4 py-10 sm:px-6 sm:py-14">
+    <div class="relative mx-auto w-full px-4 py-10 sm:px-6 sm:py-14 z-10">
       <header class="mb-8 sm:mb-10">
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-vr">
           vr.fi
         </p>
         <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Command Generator (Ticket Miner CLI)
+          Find cheaper train tickets
         </h1>
         <p class="mt-3 max-w-xl text-sm leading-relaxed text-fog">
-          Fill in your trip, copy the command, run it in the CLI.
+          Fill in your trip below. Then copy the command and paste it into
+          Terminal (Mac) or Command Prompt (Windows).
         </p>
       </header>
 
       <div class="grid gap-6 lg:grid-cols-[1fr,280px]">
         <main
-          class="rounded-2xl border border-line bg-panel/90 p-5 shadow-panel backdrop-blur sm:p-7"
+          class="rounded-2xl border border-line bg-panel/20 p-5 shadow-panel backdrop-blur sm:p-7"
         >
-          <form id="generator-form" class="space-y-6" onsubmit="return false;">
-            <!-- Route -->
+          <form id="generator-form" class="space-y-7" onsubmit="return false;">
             <section>
               <h2
                 class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
               >
-                Route
+                Where are you going?
               </h2>
               <div
                 class="grid grid-cols-1 gap-3 sm:grid-cols-[1fr,auto,1fr] sm:items-end"
@@ -100,13 +101,14 @@
                     type="text"
                     value="Helsinki"
                     autocomplete="off"
-                    class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
                 </div>
                 <button
                   type="button"
                   id="swap-btn"
                   title="Swap stations"
+                  aria-label="Swap from and to"
                   class="mx-auto flex h-10 w-10 items-center justify-center rounded-lg border border-line text-fog transition hover:border-lineBright hover:text-paper sm:mb-0.5"
                 >
                   <svg
@@ -133,43 +135,29 @@
                     type="text"
                     value="Oulu"
                     autocomplete="off"
-                    class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
                 </div>
               </div>
               <datalist id="stations">
                 <option value="Helsinki"></option>
-                <option value="HKI"></option>
-                <option value="Tampere"></option>
-                <option value="TKU"></option>
-                <option value="Turku"></option>
-                <option value="TKL"></option>
-                <option value="Oulu"></option>
-                <option value="OUL"></option>
-
-                <option value="Seinäjoki"></option>
-                <option value="SK"></option>
-
-                <option value="Tikkurila"></option>
-                <option value="TKL"></option>
-
                 <option value="Pasila"></option>
-                <option value="PSL"></option>
-
+                <option value="Tikkurila"></option>
+                <option value="Tampere"></option>
+                <option value="Turku"></option>
+                <option value="Oulu"></option>
+                <option value="Seinäjoki"></option>
                 <option value="Vaasa"></option>
                 <option value="Lahti"></option>
-                <option value="LAH"></option>
                 <option value="Jyväskylä"></option>
-                <option value="JVL"></option>
               </datalist>
             </section>
 
-            <!-- Timing -->
             <section>
               <h2
                 class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
               >
-                Arrival window
+                When do you need to arrive?
               </h2>
               <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div>
@@ -181,12 +169,12 @@
                     type="time"
                     value="14:00"
                     required
-                    class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
                 </div>
                 <div>
                   <label for="band-hours" class="mb-1.5 block text-xs text-fog"
-                    >Band (hours)</label
+                    >Hours before</label
                   >
                   <input
                     id="band-hours"
@@ -194,37 +182,42 @@
                     min="1"
                     max="12"
                     value="8"
-                    class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
+                  <p class="mt-1 text-[11px] text-fog">
+                    Only trains in this window
+                  </p>
                 </div>
                 <div>
                   <label for="start" class="mb-1.5 block text-xs text-fog"
-                    >First day</label
+                    >Start looking from</label
                   >
                   <input
                     id="start"
                     type="date"
-                    class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
                   />
-                  <p class="mt-1 text-[11px] text-fog">Empty = tomorrow</p>
+                  <p class="mt-1 text-[11px] text-fog">
+                    Leave empty to start tomorrow
+                  </p>
                 </div>
               </div>
               <p
                 id="range-preview"
-                class="mt-2 rounded-md border border-line/80 bg-ink/60 px-3 py-2 font-mono text-[11px] text-fog"
+                class="mt-3 rounded-md border border-line/80 bg-ink/60 px-3 py-2 text-xs leading-relaxed text-fog"
               ></p>
             </section>
 
-            <!-- Passenger -->
             <section>
               <h2
                 class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
               >
-                Passenger
+                Who’s travelling?
               </h2>
               <div
                 class="inline-flex rounded-lg border border-line p-0.5"
                 role="group"
+                aria-label="Passenger type"
               >
                 <button
                   type="button"
@@ -244,112 +237,17 @@
                 </button>
               </div>
             </section>
-
-            <!-- Options -->
-            <section>
-              <h2
-                class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
-              >
-                Options
-              </h2>
-              <div class="flex flex-wrap gap-x-6 gap-y-2">
-                <label
-                  class="flex cursor-pointer items-center gap-2 text-sm text-fog"
-                >
-                  <input
-                    id="mock"
-                    type="checkbox"
-                    checked
-                    class="h-4 w-4 rounded border-line bg-ink accent-vr"
-                  />
-                  Mock data (offline)
-                </label>
-
-                <label
-                  class="flex cursor-pointer items-center gap-2 text-sm text-fog"
-                >
-                  <input
-                    id="return-trip"
-                    type="checkbox"
-                    class="h-4 w-4 rounded border-line bg-ink accent-vr"
-                  />
-                  Return journey
-                </label>
-              </div>
-
-              <details class="mt-4 group">
-                <summary
-                  class="cursor-pointer text-xs text-fog transition hover:text-paper"
-                >
-                  Advanced flags
-                </summary>
-                <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div>
-                    <label for="week" class="mb-1.5 block text-xs text-fog"
-                      >ISO week (legacy)</label
-                    >
-                    <input
-                      id="week"
-                      type="number"
-                      min="1"
-                      max="53"
-                      placeholder="optional"
-                      class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none focus:border-vr"
-                    />
-                  </div>
-                  <div>
-                    <label for="year" class="mb-1.5 block text-xs text-fog"
-                      >Week year</label
-                    >
-                    <input
-                      id="year"
-                      type="number"
-                      min="2024"
-                      max="2030"
-                      placeholder="current year"
-                      class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none focus:border-vr"
-                    />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label for="delay" class="mb-1.5 block text-xs text-fog"
-                      >Delay between days (ms)</label
-                    >
-                    <input
-                      id="delay"
-                      type="number"
-                      min="0"
-                      step="100"
-                      placeholder="800"
-                      class="w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm outline-none focus:border-vr"
-                    />
-                  </div>
-                </div>
-              </details>
-            </section>
           </form>
 
           <div class="mt-8 border-t border-line pt-6">
             <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <div
-                class="inline-flex rounded-lg border border-line p-0.5 text-xs"
-              >
-                <button
-                  type="button"
-                  id="mode-dev"
-                  class="seg-btn rounded-md border border-transparent px-3 py-1.5 font-mono transition"
-                  aria-pressed="true"
+              <p class="text-xs font-medium uppercase tracking-wider text-fog">
+                Your command
+                <small class="lowercase"
+                  >(command note: if you are running the miner inside the
+                  directory, change 'vr-miner' to 'VR-ticket-miner')</small
                 >
-                  npm run dev
-                </button>
-                <button
-                  type="button"
-                  id="mode-bin"
-                  class="seg-btn rounded-md border border-transparent px-3 py-1.5 font-mono transition"
-                  aria-pressed="false"
-                >
-                  vr-miner
-                </button>
-              </div>
+              </p>
               <button
                 type="button"
                 id="copy-btn"
@@ -373,50 +271,58 @@
             </div>
 
             <pre
-              class="overflow-x-auto rounded-xl border border-line bg-ink p-4 font-mono text-[13px] leading-relaxed text-paper"
+              class="overflow-x-auto rounded-xl border border-line bg-ink/40 p-4 font-mono text-[13px] leading-relaxed text-paper"
             ><code id="command-output"></code></pre>
 
-            <p class="mt-3 text-xs leading-relaxed text-fog">
-              Run from the repo root after
-              <code
-                class="rounded bg-ink px-1 py-0.5 font-mono text-[11px] text-vr"
-                >npm install</code
-              >. Live mode needs
-              <code
-                class="rounded bg-ink px-1 py-0.5 font-mono text-[11px] text-vr"
-                >npx playwright install chromium</code
-              >
-            </p>
+            <ol
+              class="mt-4 list-decimal space-y-1.5 pl-4 text-xs leading-relaxed text-fog"
+            >
+              <li>Copy the command above.</li>
+              <li>Open Terminal (Mac) or Command Prompt (Windows).</li>
+              <li>
+                Make sure you are in the
+                <code
+                  class="rounded bg-ink/60 px-1 py-0.5 font-mono text-[11px] text-vr"
+                  >VR-ticket-miner</code
+                >
+                folder, then paste and press Enter.
+              </li>
+            </ol>
           </div>
         </main>
 
         <aside class="space-y-4 lg:pt-2">
-          <div class="rounded-xl border border-line bg-panel/70 p-4">
+          <div
+            class="rounded-xl border border-line bg-panel/40 p-4 backdrop-blur"
+          >
             <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
-              How the window works
+              How this works
             </h3>
             <p class="mt-2 text-sm leading-relaxed text-fog">
-              With an 8h band and arrive-by 14:00, only trips landing between
+              VR’s website only lets you search one day at a time. This tool
+              checks <span class="text-paper">14 days</span> for you and keeps
+              trains that arrive by your chosen time; for example, with an
+              8-hour window and arrive-by 14:00, arrivals between
               <span class="text-paper">06:01</span> and
-              <span class="text-paper">14:00</span> count. Each day’s cheapest
-              match is compared across the week.
+              <span class="text-paper">14:00</span>.
             </p>
           </div>
-          <div class="rounded-xl border border-line bg-panel/70 p-4">
+          <div
+            class="rounded-xl border border-line bg-panel/50 p-4 backdrop-blur"
+          >
             <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
-              Station list
+              Station names
             </h3>
-            <p class="mt-2 text-sm text-fog">
-              <code class="font-mono text-xs text-vr"
-                >npm run dev -- stations</code
-              >
+            <p class="mt-2 text-sm leading-relaxed text-fog">
+              Type a city name as you would on vr.fi: Helsinki, Tampere, Oulu,
+              and so on. Suggestions appear as you type.
             </p>
           </div>
           <a
             href="https://www.vr.fi/junaliput#osta-lippuja"
             target="_blank"
             rel="noopener noreferrer"
-            class="block rounded-xl border border-lineBright/40 bg-vrDim/20 px-4 py-3 text-sm text-paper transition hover:border-vr/50"
+            class="block rounded-xl border border-lineBright/40 bg-vrDim/30 backdrop-blur px-4 py-3 text-sm text-paper transition hover:border-vr/50"
           >
             Official VR ticket search ↗
           </a>
@@ -424,7 +330,7 @@
       </div>
 
       <footer class="mt-10 text-center text-xs text-fog">
-        VR Ticket Miner - Command Builder
+        VR Ticket Miner
       </footer>
     </div>
 
@@ -436,20 +342,12 @@
       const arriveInput = $("arrive");
       const bandInput = $("band-hours");
       const startInput = $("start");
-      const mockInput = $("mock");
-      const returnInput = $("return-trip");
-      const weekInput = $("week");
-      const yearInput = $("year");
-      const delayInput = $("delay");
       const output = $("command-output");
       const rangePreview = $("range-preview");
       const copyBtn = $("copy-btn");
       const copyLabel = $("copy-label");
-      const modeDev = $("mode-dev");
-      const modeBin = $("mode-bin");
 
       let passenger = "adult";
-      let useDev = true;
 
       function tomorrowIso() {
         const d = new Date();
@@ -461,6 +359,15 @@
         const d = new Date(iso + "T12:00:00");
         d.setDate(d.getDate() + days);
         return d.toISOString().slice(0, 10);
+      }
+
+      function formatNiceDate(iso) {
+        const d = new Date(iso + "T12:00:00");
+        return d.toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
       }
 
       function shellQuote(s) {
@@ -480,9 +387,6 @@
         const arrive = formatArrive(arriveInput.value);
         const band = bandInput.value || "8";
         const start = startInput.value;
-        const week = weekInput.value.trim();
-        const year = yearInput.value.trim();
-        const delay = delayInput.value.trim();
 
         const parts = [
           "search",
@@ -493,37 +397,19 @@
 
         if (passenger !== "adult") parts.push(`--passenger ${passenger}`);
         if (band !== "8") parts.push(`--band-hours ${band}`);
-
-        if (week) {
-          parts.push(`--week ${week}`);
-          if (year) parts.push(`--year ${year}`);
-        } else if (start) {
-          parts.push(`--start ${start}`);
-        }
-
-        if (returnInput.checked) parts.push("--return");
-        if (mockInput.checked) parts.push("--mock");
-        if (delay) parts.push(`--delay ${delay}`);
+        if (start) parts.push(`--start ${start}`);
 
         return parts.join(" ");
       }
 
       function updateRangePreview() {
-        const week = weekInput.value.trim();
-        if (week) {
-          rangePreview.textContent = `Legacy mode: ISO week ${week} (7 days from that week’s Monday).`;
-          return;
-        }
         const first = startInput.value || tomorrowIso();
-        const last = addDaysIso(first, 6);
-        rangePreview.textContent = `Scanning ${first} → ${last} (7 days).`;
+        const last = addDaysIso(first, 13);
+        rangePreview.textContent = `We'll check 14 days: ${formatNiceDate(first)} – ${formatNiceDate(last)}.`;
       }
 
       function updateCommand() {
-        const args = buildArgs();
-        output.textContent = useDev
-          ? `npm run dev -- ${args}`
-          : `vr-miner ${args}`;
+        output.textContent = `vr-miner ${buildArgs()}`;
         updateRangePreview();
       }
 
@@ -536,25 +422,7 @@
         updateCommand();
       }
 
-      function setMode(dev) {
-        useDev = dev;
-        modeDev.setAttribute("aria-pressed", dev ? "true" : "false");
-        modeBin.setAttribute("aria-pressed", dev ? "false" : "true");
-        updateCommand();
-      }
-
-      [
-        fromInput,
-        toInput,
-        arriveInput,
-        bandInput,
-        startInput,
-        mockInput,
-        returnInput,
-        weekInput,
-        yearInput,
-        delayInput,
-      ].forEach((el) => {
+      [fromInput, toInput, arriveInput, bandInput, startInput].forEach((el) => {
         el.addEventListener("input", updateCommand);
         el.addEventListener("change", updateCommand);
       });
@@ -564,9 +432,6 @@
           setPassenger(btn.dataset.passenger),
         );
       });
-
-      modeDev.addEventListener("click", () => setMode(true));
-      modeBin.addEventListener("click", () => setMode(false));
 
       $("swap-btn").addEventListener("click", () => {
         const t = fromInput.value;
@@ -585,17 +450,7 @@
         }
       });
 
-      weekInput.addEventListener("input", () => {
-        if (weekInput.value) startInput.value = "";
-        updateCommand();
-      });
-      startInput.addEventListener("input", () => {
-        if (startInput.value) weekInput.value = "";
-        updateCommand();
-      });
-
       setPassenger("adult");
-      setMode(true);
       updateCommand();
     </script>
   </body>

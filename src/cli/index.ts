@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name("vr-miner")
   .description(
-    "Find the cheapest VR train tickets for a route across 7 days (vr.fi/junaliput)"
+    "Find the cheapest VR train tickets for a route across 14 days (vr.fi/junaliput)"
   )
   .version("0.1.0");
 

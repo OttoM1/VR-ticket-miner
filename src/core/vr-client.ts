@@ -110,7 +110,7 @@ export async function postGraphqlSearch(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "User-Agent": "vr-ticker-miner/0.1.0",
+        "User-Agent": "vr-ticket-miner/0.1.0",
       },
     });
     return response.data;
