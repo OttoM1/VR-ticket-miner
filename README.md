@@ -1,15 +1,29 @@
 # VR Ticket Miner
 
-VR Ticket Miner is an open-source "vibe" project; bug reports, documentation improvements, and code changes are welcome.
+<p align="center">
+  <a href="https://ottom1.github.io/VR-ticket-miner/">
+    <img src="ui/body.jpg" alt="VR Ticket Miner" width="100%">
+  </a>
+</p>
 
-- Current agent prompt pipeline is available at [`agent/`](agent/).
-- Note: The documentation doesn't account for human made code changes.
+VR Ticket Miner is an open-source "vibe" project; bug reports, documentation improvements, and code changes are welcome.
 
 ## Overview
 
 Find the cheapest VR train ticket for your route by scanning 14 days at once, instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
 
 You pick origin, destination, passenger type (currently only adult or student), and when you need to **arrive**. The miner queries each of the next 14 days, keeps only trips that land inside an eight-hour arrival window and prints the cheapest option per day plus the best deal overall.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-success?labelColor=2B2D42)](LICENCE)
+[![Node 20+](https://img.shields.io/badge/node-20%2B-339933?labelColor=2B2D42)](https://nodejs.org/)
+[![Search builder](https://img.shields.io/badge/search-builder-05923d?labelColor=2B2D42)](https://ottom1.github.io/VR-ticket-miner/)
+
+[![open source](https://img.shields.io/badge/project-open%20source-2B2D42?labelColor=2B2D42)](https://github.com/OttoM1/VR-ticket-miner)
+[![CLI](https://img.shields.io/badge/interface-CLI-5D11A9?labelColor=2B2D42)](#tech-install--use)
+[![14-day scan](https://img.shields.io/badge/scan-14%20days-05923d?labelColor=2B2D42)](#what-the-search-does)
+
+- Current agent prompt pipeline is available at [`agent/`](agent/).
+- Note: The documentation doesn't account for human made code changes.
 
 ## Tech Install & Use
 
