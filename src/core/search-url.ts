@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import type { PassengerCategory } from "./passengers.js";
 import { toVrPassengerType } from "./passengers.js";
 import type { TripSearchParams } from "./types.js";
 

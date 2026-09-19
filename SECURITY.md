@@ -44,3 +44,7 @@ VR Ticket Miner queries third-party services. To reduce risk when running the to
 ## Responsible automation
 
 This tool is intended for personal fare research. Automated or high-volume requests against VR’s services may violate their terms of service and can harm availability for other users. Do not use this project to bypass authentication, scrape private data, or attack VR infrastructure.
+
+## Disclaimer
+
+This project is not for commercial use as-is, is not affiliated with VR Group or vr.fi, and was not developed in collaboration with them. See the [README disclaimer](README.md#disclaimer) and VR’s [privacy](https://www.vr.fi/en/privacy) and [legal terms](https://www.vr.fi/en/terms-and-conditions) before use.
