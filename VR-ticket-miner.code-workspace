@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "task.allowAutomaticTasks": "on",
+    "npm.autoDetect": "off",
+    "terminal.integrated.hideOnStartup": "never"
+  }
+}

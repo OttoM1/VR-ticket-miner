@@ -1,3 +1,4 @@
+.cache/
 node_modules/
 dev_tokens/
 dist/
@@ -11,3 +12,7 @@ vr-*.js
 chunk-*.js
 scripts/capture-vr-api.mjs
 scripts/extract-gql.mjs
+.ITERATIONS.md
+.err.txt
+.out.txt
+.test.sh

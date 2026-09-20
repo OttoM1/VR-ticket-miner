@@ -12,7 +12,8 @@
     "start": "node dist/cli/index.js",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
-    "search": "tsx src/cli/index.ts search"
+    "search": "tsx src/cli/index.ts search",
+    "check-bash": "bash bash/run_all.sh"
   },
   "engines": {
     "node": ">=20"

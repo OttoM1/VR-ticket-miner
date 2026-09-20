@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "VR Miner: bash checks",
+      "type": "shell",
+      "command": "VR_MINER_AUTO_CHECKS=1 bash bash/run_all.sh; echo; echo 'Checks done — shell stays open.'; exec bash -l",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VR_MINER_AUTO_CHECKS": "1"
+        }
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 1
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}

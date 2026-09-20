@@ -76,6 +76,28 @@ Note: (this needs to be done only once, not everytime you want to use the tool)
   Now the tool is installed and ready to use.
   You can now create a command in [`https://ottom1.github.io/VR-ticket-miner/`](https://ottom1.github.io/VR-ticket-miner/), and paste it to the CLI.
 
+### Bash checks (clone / fork)
+
+- (For devs only)
+
+On folder open, the repo tries to open a **bash** and run [`bash/run_all.sh`](bash/run_all.sh) (`env.sh` first, then the other `bash/*.sh` scripts).
+
+**One-time setup in VS Code / Cursor** (required?):
+
+1. Open the **`VR-ticket-miner`** folder (or open [`VR-ticket-miner.code-workspace`](VR-ticket-miner.code-workspace)).
+2. **Trust** the workspace if prompted.
+3. Command Palette: **`Tasks: Manage Automatic Tasks in Folder`** -> **Allow Automatic Tasks**.
+4. Reload the window. You should see a terminal tab running the checks.
+
+Optional: **Terminals Manager** can run the same command manually via [`.vscode/terminals.json`](.vscode/terminals.json) (`Terminals: Run`) — `autorun` is off so it does not race the folder-open task.
+
+Manual run:
+
+```bash
+bash bash/env.sh          # env only
+npm run check-bash        # env + all bash checks
+```
+
 #### Having issues with installation?
 
 Hit me up:

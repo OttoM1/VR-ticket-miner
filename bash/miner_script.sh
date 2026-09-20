@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Core miner behaviour (dev mock)
+# miner core behaviour check (offline mock)
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -51,7 +51,7 @@ cheapest_eur() {
     | head -1
 }
 
-echo "VR Ticket Miner — miner checks (root: $ROOT)"
+echo "Miner script checks (root: $ROOT)"
 echo
 
 step "CLI build present"
@@ -94,8 +94,8 @@ else
 fi
 
 step "Reject invalid --arrive"
-if "${CLI[@]}" search --from HKI --to TKU --arrive bad --mock 2>/dev/null; then
-  die "invalid --arrive should exit non-zero"
+if INVALID_ARRIVE_OUT="$("${CLI[@]}" search --from HKI --to TKU --arrive bad --mock 2>&1)"; then
+  die "invalid --arrive should exit non-zero (got: $INVALID_ARRIVE_OUT)"
 else
   pass "invalid --arrive exits with error"
 fi

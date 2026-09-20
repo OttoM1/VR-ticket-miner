@@ -1,0 +1,11 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "VR Miner checks",
+      "focus": true,
+      "open": true,
+      "command": "VR_MINER_AUTO_CHECKS=1 bash bash/run_all.sh"
+    }
+  ]
+}
