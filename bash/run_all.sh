@@ -7,6 +7,12 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+RED='\033[0;31m';
+GREEN='\033[0;32m';
+YELLOW='\033[0;33m';
+DIM='\033[0;36m';
+NC='\033[0m';
+
 LOCK_DIR="$ROOT/.cache/bash-run-all.lock"
 mkdir -p "$ROOT/.cache"
 if ! mkdir "$LOCK_DIR" 2>/dev/null; then
@@ -17,7 +23,7 @@ trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 export VR_MINER_AUTO_CHECKS=1
 
-echo "=== VR Ticket Miner: environment (bash/env.sh) ==="
+echo -e "\n${DIM}=== VR Ticket Miner: environment (bash/env.sh) ===${NC}"
 if ! bash "$ROOT/bash/env.sh"; then
   echo
   echo "Environment check failed; try fixing Node.js 20+ / git / bash, then re-run:"
@@ -37,7 +43,7 @@ for script in "${CHECKS[@]}"; do
     exit 1
   fi
   echo
-  echo "=== Running $script ==="
+  echo -e "${DIM}=== Running $script ===${NC}"
   if ! bash "$ROOT/$script"; then
     echo
     echo "Failed: $script"
