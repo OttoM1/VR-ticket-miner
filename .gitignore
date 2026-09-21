@@ -17,3 +17,4 @@ scripts/extract-gql.mjs
 .err.txt
 .out.txt
 .test.sh
+fluff/

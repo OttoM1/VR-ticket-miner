@@ -12,10 +12,9 @@ NC='\033[0m';
 
 FAIL=0;
 cd "$ROOT/agent";
-echo -e "${DIM}\n\nQuick bash check (agent pipeline):\n${NC}";
 if [[ -f PROMPT_1.md && -f PROMPT_2.md && -f PROMPT_3.md && -f PROMPT_4.md ]];
 then
-printf "${GREEN}\n\n--------- agent pipeline - PROMPT 1 ---------\n${NC}"; head -n 3 'PROMPT_1.md';
+printf "${GREEN}--------- agent pipeline - PROMPT 1 ---------\n${NC}"; head -n 3 'PROMPT_1.md';
 printf "${GREEN}\n\n--------- agent pipeline - PROMPT 2 ---------\n${NC}"; head -n 3 'PROMPT_2.md';
 printf "${GREEN}\n\n--------- agent pipeline - PROMPT 3 ---------\n${NC}"; head -n 3 'PROMPT_3.md';
 printf "${GREEN}\n\n--------- agent pipeline - PROMPT 4 ---------\n${NC}"; head -n 3 'PROMPT_4.md';
@@ -35,7 +34,7 @@ printf "${GREEN}\n\n--------- agent pipeline - PROMPT 3 ---------\n${NC}"; cat '
 printf "${GREEN}\n\n--------- agent pipeline - PROMPT 4 ---------\n${NC}"; cat 'PROMPT_4.md';
 printf "${NC}\n\n${NC}";
 
-else echo -e "${DIM}\n\nSkipped full file content.\n${NC}";
+else echo -e "${YELLOW}\n\nSkipped full file content.\n${NC}";
 fi;
 
 else printf "${RED}\n\n---------Agent pipeline not found---------\n${NC}";
