@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import ora from "ora";
+import { isArrivalFilterActive } from "../../core/arrival-window.js";
 import type { ArrivalWindow } from "../../core/types.js";
 import type { PassengerCategory } from "../../core/passengers.js";
 import { getSearchRangeLabel, WeekMiner } from "../../miner/week-miner.js";
@@ -16,6 +17,7 @@ export interface SearchCommandOptions {
   week?: number;
   year?: number;
   returnTrip?: boolean;
+  directOnly?: boolean;
   mock?: boolean;
   delay?: number;
 }
@@ -36,6 +38,7 @@ export async function runSearch(opts: SearchCommandOptions): Promise<void> {
     weekNumber: opts.week,
     year: opts.year,
     returnTrip: opts.returnTrip ?? false,
+    directOnly: opts.directOnly ?? false,
     mock: opts.mock ?? process.env.VR_MINER_MOCK === "1",
     requestDelayMs: opts.delay,
   };
@@ -45,8 +48,12 @@ export async function runSearch(opts: SearchCommandOptions): Promise<void> {
   const passengerLabel =
     opts.passenger === "student" ? chalk.cyan(" student") : "";
 
+  const directLabel = opts.directOnly ? chalk.green(" · direct only") : "";
+  const arrivalLabel = isArrivalFilterActive(arrivalWindow)
+    ? `arrive ${opts.arrive} (${opts.bandHours}h window)`
+    : "any arrival";
   const spinner = ora(
-    `Mining ${rangeLabel}: ${opts.from} → ${opts.to} · arrive ${opts.arrive} (±${opts.bandHours}h band)${passengerLabel}${modeLabel}`
+    `Mining ${rangeLabel}: ${opts.from} → ${opts.to} · ${arrivalLabel}${passengerLabel}${directLabel}${modeLabel}`
   ).start();
 
   try {

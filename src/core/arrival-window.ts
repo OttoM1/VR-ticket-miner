@@ -24,6 +24,11 @@ export function arrivalTargetOnDate(day: Date, window: ArrivalWindow): Date {
   );
 }
 
+/** When bandHours is 0, all trips on the day are kept (no arrival-time filter). */
+export function isArrivalFilterActive(window: ArrivalWindow): boolean {
+  return window.bandHours > 0;
+}
+
 /**
  * Keep trips whose arrival falls in the band ending at the target arrival:
  * (target - bandHours, target] on the same calendar day.
@@ -33,6 +38,7 @@ export function isWithinArrivalBand(
   day: Date,
   window: ArrivalWindow
 ): boolean {
+  if (!isArrivalFilterActive(window)) return true;
   const target = arrivalTargetOnDate(day, window);
   const bandStart = addHours(target, -window.bandHours);
   return arrival > bandStart && arrival <= target;
@@ -43,5 +49,6 @@ export function filterTripsByArrivalWindow(
   day: Date,
   window: ArrivalWindow
 ): TripResult[] {
+  if (!isArrivalFilterActive(window)) return trips;
   return trips.filter((t) => isWithinArrivalBand(t.arrivalTime, day, window));
 }

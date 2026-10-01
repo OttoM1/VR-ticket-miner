@@ -13,7 +13,8 @@
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
     "search": "tsx src/cli/index.ts search",
-    "check-bash": "bash bash/run_all.sh"
+    "check-bash": "bash bash/run_all.sh",
+    "go": "npx serve"
   },
   "engines": {
     "node": ">=20"

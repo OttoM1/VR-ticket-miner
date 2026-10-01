@@ -20,7 +20,8 @@ function makeTrip(
   minute: number,
   durationMinutes: number,
   trainNumber: string,
-  basePriceCents: number
+  basePriceCents: number,
+  legCount = 1
 ): TripResult {
   const departureTime = setMinutes(setHours(date, hour), minute);
   const arrivalTime = addMinutes(departureTime, durationMinutes);
@@ -31,6 +32,7 @@ function makeTrip(
     arrivalTime,
     durationMinutes,
     trainNumber,
+    legCount,
     offers,
     cheapestOffer: cheapest(offers),
   };
@@ -57,6 +59,7 @@ export function generateMockDayResult(params: TripSearchParams): DaySearchResult
     makeTrip(date, 8, 15, 92, "IC 3", basePrice + 200),
     makeTrip(date, 10, 45, 94, "IC 5", basePrice - 100),
     makeTrip(date, 12, 0, 94, "IC 7", basePrice - 100),
+    makeTrip(date, 12, 45, 130, "IC 2 + IC 8", basePrice - 250, 2),
     makeTrip(date, 13, 30, 93, "IC 9", basePrice + 80),
     makeTrip(date, 15, 0, 96, "IC 11", basePrice + 350),
     makeTrip(date, 17, 15, 92, "IC 13", basePrice + 120),

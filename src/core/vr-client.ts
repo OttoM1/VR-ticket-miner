@@ -158,6 +158,9 @@ export function finalizeDayResult(
       params.arrivalWindow
     );
   }
+  if (params.directOnly) {
+    trips = trips.filter((t) => t.legCount === 1);
+  }
   if (options.adjustPassengerPricing) {
     trips = applyPassengerPricing({ ...result, trips }, params).trips;
   }

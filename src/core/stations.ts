@@ -8,54 +8,44 @@ const STATIONS: readonly Station[] = [
     aliases: ["helsinki", "helsingfors", "hel"],
   },
   {
-    code: "TKU",
-    name: "Turku",
-    aliases: ["turku", "åbo"],
-  },
-  {
-    code: "TPE",
-    name: "Tampere",
-    aliases: ["tampere", "tam"],
-  },
-  {
     code: "PSL",
     name: "Pasila",
-    aliases: ["pasila", "böle"],
+    aliases: ["pasila", "böle", "psl"],
   },
   {
-    code: "OL",
-    name: "Oulu",
-    aliases: ["oulu"],
+    code: "TKL",
+    name: "Tikkurila",
+    aliases: ["tikkurila", "tkl", "dickursby"],
   },
   {
-    code: "VS",
-    name: "Vaasa",
-    aliases: ["vaasa", "vasa", "va", "vaa", "vsa"],
+    code: "KE",
+    name: "Kerava",
+    aliases: ["kerava"],
   },
   {
-    code: "KUO",
-    name: "Kuopio",
-    aliases: ["kuopio"],
+    code: "JP",
+    name: "Järvenpää",
+    aliases: ["jarvenpaa", "järvenpää"],
   },
   {
-    code: "JY",
-    name: "Jyväskylä",
-    aliases: ["jyvaskyla", "jyväskylä", "jkl"],
+    code: "HY",
+    name: "Hyvinkää",
+    aliases: ["hyvinkaa", "hyvinkää"],
   },
   {
-    code: "ROI",
-    name: "Rovaniemi",
-    aliases: ["rovaniemi", "rov"],
+    code: "RI",
+    name: "Riihimäki",
+    aliases: ["riihimaki", "riihimäki"],
   },
   {
-    code: "KAJ",
-    name: "Kajaani",
-    aliases: ["kajaani"],
+    code: "HL",
+    name: "Hämeenlinna",
+    aliases: ["hameenlinna", "hämeenlinna"],
   },
   {
-    code: "KEM",
-    name: "Kemi",
-    aliases: ["kemi"],
+    code: "FO",
+    name: "Forssa",
+    aliases: ["forssa"],
   },
   {
     code: "LH",
@@ -68,36 +58,115 @@ const STATIONS: readonly Station[] = [
     aliases: ["kouvola"],
   },
   {
+    code: "KA",
+    name: "Kotka",
+    aliases: ["kotka"],
+  },
+  {
+    code: "POH",
+    name: "Porvoo",
+    aliases: ["porvoo", "borgå"],
+  },
+  {
+    code: "TPE",
+    name: "Tampere",
+    aliases: ["tampere", "tam"],
+  },
+  {
+    code: "TKU",
+    name: "Turku",
+    aliases: ["turku", "åbo"],
+  },
+  {
+    code: "SL",
+    name: "Salo",
+    aliases: ["salo"],
+  },
+  {
+    code: "JY",
+    name: "Jyväskylä",
+    aliases: ["jyvaskyla", "jyväskylä", "jkl"],
+  },
+  {
+    code: "MI",
+    name: "Mikkeli",
+    aliases: ["mikkeli"],
+  },
+  {
+    code: "LR",
+    name: "Lappeenranta",
+    aliases: ["lappeenranta"],
+  },
+  {
+    code: "IMR",
+    name: "Imatra",
+    aliases: ["imatra"],
+  },
+  {
+    code: "JNS",
+    name: "Joensuu",
+    aliases: ["joensuu"],
+  },
+  {
+    code: "KUO",
+    name: "Kuopio",
+    aliases: ["kuopio"],
+  },
+  {
+    code: "ISL",
+    name: "Iisalmi",
+    aliases: ["iisalmi"],
+  },
+  {
+    code: "PIE",
+    name: "Pieksämäki",
+    aliases: ["pieksamaki", "pieksämäki"],
+  },
+  {
     code: "SK",
     name: "Seinäjoki",
-    aliases: ["seinajoki", "seinäjoki"],
+    aliases: ["seinajoki", "seinäjoki", "sjk"],
   },
   {
-    code: "RI",
-    name: "Riihimäki",
-    aliases: ["riihimaki", "riihimäki"],
+    code: "VS",
+    name: "Vaasa",
+    aliases: ["vaasa", "vasa", "vsa"],
   },
-
   {
-    code: "PSL",
-    name: "Pasila",
-    aliases: ["pasila", "böle", "psl"],
+    code: "KK",
+    name: "Kokkola",
+    aliases: ["kokkola"],
   },
-
   {
-    code: "TKL",
-    name: "Tikkurila",
-    aliases: ["tikkurila", "tkl", "dickursby"],
+    code: "YLI",
+    name: "Ylivieska",
+    aliases: ["ylivieska"],
   },
-
   {
-    code: "SK",
-    name: "Seinäjoki",
-    aliases: ["sk", "sjk", "seinäjoki"],
+    code: "RH",
+    name: "Raahe",
+    aliases: ["raahe"],
   },
-
-
-
+  {
+    code: "OL",
+    name: "Oulu",
+    aliases: ["oulu"],
+  },
+  {
+    code: "KAJ",
+    name: "Kajaani",
+    aliases: ["kajaani"],
+  },
+  {
+    code: "KEM",
+    name: "Kemi",
+    aliases: ["kemi"],
+  },
+  {
+    code: "ROI",
+    name: "Rovaniemi",
+    aliases: ["rovaniemi", "rov"],
+  },
 ] as const;
 
 function normalize(input: string): string {
@@ -136,6 +205,13 @@ export function resolveStation(input: string): Station {
 
 export function listStations(): readonly Station[] {
   return STATIONS;
+}
+
+/** Display names for UI autocomplete (sorted). */
+export function listStationDisplayNames(): string[] {
+  return [...STATIONS.map((s) => s.name)].sort((a, b) =>
+    a.localeCompare(b, "fi")
+  );
 }
 
 export function formatStation(code: string): string {

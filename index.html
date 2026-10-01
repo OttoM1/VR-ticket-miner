@@ -24,7 +24,7 @@
             colors: {
               ink: "rgb(20, 23, 24)",
               panel: "rgba(0, 0, 0, 0.49)",
-              line: "rgb(93, 17, 169)",
+              line: "rgb(77, 3, 150)",
               lineBright: "#2d5a47",
               fog: "rgb(225, 225, 225)",
               paper: "rgb(225, 225, 225)",
@@ -37,17 +37,15 @@
             },
             boxShadow: {
               panel: "0 18px 30px rgba(0, 0, 0, 0.65)",
+              inset: "inset 0 0 16px rgba(105, 0, 158, 0.77)",
+              insetS: "inset 0 0 12px rgba(105, 0, 158, 0.77)",
+              insetG: "inset 0 0 12px rgba(11, 115, 39, 0.74)",
             },
           },
         },
       };
     </script>
     <style>
-      input[type="date"]::-webkit-calendar-picker-indicator,
-      input[type="time"]::-webkit-calendar-picker-indicator {
-        filter: invert(0.85);
-        cursor: pointer;
-      }
       .seg-btn[aria-pressed="true"] {
         background: rgba(0, 166, 81, 0.18);
         border-color: rgba(0, 166, 81, 0.55);
@@ -58,61 +56,256 @@
 
   <body>
     <div class="body"></div>
-    <div class="media_alert">
-      <strong>Currently not available on this resolution.</strong>
-    </div>
     <div class="pointer-events-none fixed inset-0 bg-black"></div>
 
-    <div class="relative mx-auto w-full px-4 py-10 sm:px-6 sm:py-14 z-10">
-      <header class="mb-8 sm:mb-10">
-        <p class="font-mono text-xs uppercase tracking-[0.2em] text-vr">
-          vr.fi
-        </p>
-        <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Find cheaper train tickets
-        </h1>
-        <p class="mt-3 max-w-xl text-sm leading-relaxed text-fog">
-          Fill in your trip below. Then copy the command and paste it into
-          Terminal (Mac) or Command Prompt (Windows).
-        </p>
-      </header>
+    <section class="scroll-wrapper">
+      <div
+        class="app-shell relative mx-auto w-full px-4 py-10 sm:px-6 sm:py-14 z-10"
+      >
+        <header class="mb-8 sm:mb-10">
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-vr">
+            vr.fi
+          </p>
+          <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Find cheaper train tickets
+          </h1>
+          <p class="mt-3 max-w-xl text-sm leading-relaxed text-fog">
+            Fill in your trip below. Then copy the command and paste it into
+            Terminal (Mac) or Command Prompt (Windows).
+          </p>
+        </header>
 
-      <div class="grid gap-6 lg:grid-cols-[1fr,280px]">
-        <main
-          class="rounded-2xl border border-line bg-panel/20 p-5 shadow-panel backdrop-blur sm:p-7"
-        >
-          <form id="generator-form" class="space-y-7" onsubmit="return false;">
-            <section>
-              <h2
-                class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
-              >
-                Where are you going?
-              </h2>
-              <div
-                class="grid grid-cols-1 gap-3 sm:grid-cols-[1fr,auto,1fr] sm:items-end"
-              >
-                <div>
-                  <label for="from" class="mb-1.5 block text-xs text-fog"
-                    >From</label
+        <div class="grid gap-6 lg:grid-cols-[1fr,280px]">
+          <main
+            class="form-panel rounded-2xl border border-line bg-panel/20 p-5 shadow-inset backdrop-blur sm:p-7"
+          >
+            <form
+              id="generator-form"
+              class="space-y-7"
+              onsubmit="return false;"
+            >
+              <section>
+                <h2
+                  class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
+                >
+                  Where are you going?
+                </h2>
+                <div
+                  class="route-grid grid grid-cols-1 gap-3 sm:grid-cols-[1fr,auto,1fr] sm:items-end"
+                >
+                  <div>
+                    <label for="from" class="mb-1.5 block text-xs text-fog"
+                      >From</label
+                    >
+                    <input
+                      id="from"
+                      list="stations"
+                      type="text"
+                      value="Helsinki"
+                      autocomplete="off"
+                      class="w-full rounded-lg border border-line shadow-inset bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    id="swap-btn"
+                    title="Swap stations"
+                    aria-label="Swap from and to"
+                    class="mx-auto flex h-10 w-10 shadow-inset items-center justify-center rounded-lg border border-line text-fog transition hover:border-lineBright hover:text-paper sm:mb-0.5"
                   >
-                  <input
-                    id="from"
-                    list="stations"
-                    type="text"
-                    value="Helsinki"
-                    autocomplete="off"
-                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
-                  />
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      />
+                    </svg>
+                  </button>
+                  <div>
+                    <label for="to" class="mb-1.5 block text-xs text-fog"
+                      >To</label
+                    >
+                    <input
+                      id="to"
+                      list="stations"
+                      type="text"
+                      value="Oulu"
+                      autocomplete="off"
+                      class="w-full shadow-insetS rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    />
+                  </div>
                 </div>
+                <datalist id="stations">
+                  <option value="Forssa"></option>
+                  <option value="Helsinki"></option>
+                  <option value="Hyvinkää"></option>
+                  <option value="Iisalmi"></option>
+                  <option value="Imatra"></option>
+                  <option value="Joensuu"></option>
+                  <option value="Jyväskylä"></option>
+                  <option value="Järvenpää"></option>
+                  <option value="Kajaani"></option>
+                  <option value="Kemi"></option>
+                  <option value="Kerava"></option>
+                  <option value="Kokkola"></option>
+                  <option value="Kotka"></option>
+                  <option value="Kouvola"></option>
+                  <option value="Kuopio"></option>
+                  <option value="Lahti"></option>
+                  <option value="Lappeenranta"></option>
+                  <option value="Mikkeli"></option>
+                  <option value="Oulu"></option>
+                  <option value="Pasila"></option>
+                  <option value="Pieksämäki"></option>
+                  <option value="Porvoo"></option>
+                  <option value="Raahe"></option>
+                  <option value="Riihimäki"></option>
+                  <option value="Rovaniemi"></option>
+                  <option value="Salo"></option>
+                  <option value="Seinäjoki"></option>
+                  <option value="Tampere"></option>
+                  <option value="Tikkurila"></option>
+                  <option value="Turku"></option>
+                  <option value="Vaasa"></option>
+                  <option value="Ylivieska"></option>
+                  <option value="Hämeenlinna"></option>
+                </datalist>
+                <label
+                  class="direct-only-row mt-4 flex cursor-pointer items-start gap-2.5 text-sm text-fog"
+                >
+                  <input
+                    id="direct-only"
+                    type="checkbox"
+                    class="mt-0.5 h-4 w-4 shrink-0 rounded border-line accent-vr"
+                  />
+                  <span>
+                    Direct trains only
+                    <span
+                      class="mt-0.5 block text-[11px] leading-snug text-fog/90"
+                    >
+                      Skip connections that require changing trains
+                    </span>
+                  </span>
+                </label>
+              </section>
+
+              <section>
+                <h2
+                  class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
+                >
+                  When do you need to arrive?
+                </h2>
+                <div class="mb-3">
+                  <p class="mb-2 text-xs text-fog">Arrival filter</p>
+                  <div
+                    class="inline-flex w-full max-w-md shadow-inset rounded-lg border border-line p-0.5 sm:w-auto"
+                    role="group"
+                    aria-label="Arrival filter"
+                  >
+                    <button
+                      type="button"
+                      class="seg-btn flex-1 rounded-md border border-transparent px-3 py-2 text-sm transition sm:flex-none sm:px-4"
+                      data-arrival-mode="window"
+                      aria-pressed="true"
+                    >
+                      4h window
+                    </button>
+                    <button
+                      type="button"
+                      class="seg-btn flex-1 rounded-md border border-transparent px-3 py-2 text-sm transition sm:flex-none sm:px-4"
+                      data-arrival-mode="any"
+                      aria-pressed="false"
+                    >
+                      Any time
+                    </button>
+                  </div>
+                  <p id="arrival-mode-hint" class="mt-2 text-[11px] text-fog"></p>
+                </div>
+                <div class="time-grid grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div id="arrive-wrap">
+                    <label for="arrive" class="mb-1.5 block text-xs text-fog"
+                      >Arrive by</label
+                    >
+                    <input
+                      id="arrive"
+                      type="time"
+                      value="14:00"
+                      class="w-full shadow-insetS rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    />
+                  </div>
+                  <div>
+                    <label for="start" class="mb-1.5 block text-xs text-fog"
+                      >Start looking from</label
+                    >
+                    <input
+                      id="start"
+                      type="date"
+                      class="w-full shadow-insetS rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
+                    />
+                    <p class="mt-1 text-[11px] text-fog">
+                      Leave empty to start tomorrow
+                    </p>
+                  </div>
+                </div>
+                <p
+                  id="range-preview"
+                  class="mt-3 rounded-md border border-line/80 bg-ink/60 px-3 py-2 text-xs leading-relaxed text-fog"
+                ></p>
+              </section>
+
+              <section>
+                <h2
+                  class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
+                >
+                  Who’s travelling?
+                </h2>
+                <div
+                  class="inline-flex shadow-inset rounded-lg border border-line p-0.5"
+                  role="group"
+                  aria-label="Passenger type"
+                >
+                  <button
+                    type="button"
+                    class="seg-btn rounded-md border border-transparent px-4 py-2 text-sm transition"
+                    data-passenger="adult"
+                    aria-pressed="true"
+                  >
+                    Adult
+                  </button>
+                  <button
+                    type="button"
+                    class="seg-btn rounded-md border border-transparent px-4 py-2 text-sm transition"
+                    data-passenger="student"
+                    aria-pressed="false"
+                  >
+                    Student
+                  </button>
+                </div>
+              </section>
+            </form>
+
+            <div class="mt-8 pt-3 border-t border-line shadow-insetpt-6">
+              <div
+                class="mb-3 flex flex-wrap items-center justify-between gap-2"
+              >
+                <p
+                  class="text-xs font-medium uppercase tracking-wider text-fog"
+                >
+                  Your command
+                </p>
                 <button
                   type="button"
-                  id="swap-btn"
-                  title="Swap stations"
-                  aria-label="Swap from and to"
-                  class="mx-auto flex h-10 w-10 items-center justify-center rounded-lg border border-line text-fog transition hover:border-lineBright hover:text-paper sm:mb-0.5"
+                  id="copy-btn"
+                  class="inline-flex items-center gap-1.5 font-mono text-xs text-vr transition hover:text-paper"
                 >
                   <svg
-                    class="h-4 w-4"
+                    class="h-3.5 w-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -121,214 +314,79 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                     />
                   </svg>
-                </button>
-                <div>
-                  <label for="to" class="mb-1.5 block text-xs text-fog"
-                    >To</label
-                  >
-                  <input
-                    id="to"
-                    list="stations"
-                    type="text"
-                    value="Oulu"
-                    autocomplete="off"
-                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
-                  />
-                </div>
-              </div>
-              <datalist id="stations">
-                <option value="Helsinki"></option>
-                <option value="Pasila"></option>
-                <option value="Tikkurila"></option>
-                <option value="Tampere"></option>
-                <option value="Turku"></option>
-                <option value="Oulu"></option>
-                <option value="Seinäjoki"></option>
-                <option value="Vaasa"></option>
-                <option value="Lahti"></option>
-                <option value="Jyväskylä"></option>
-              </datalist>
-            </section>
-
-            <section>
-              <h2
-                class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
-              >
-                When do you need to arrive?
-              </h2>
-              <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <div>
-                  <label for="arrive" class="mb-1.5 block text-xs text-fog"
-                    >Arrive by</label
-                  >
-                  <input
-                    id="arrive"
-                    type="time"
-                    value="14:00"
-                    required
-                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
-                  />
-                </div>
-                <div>
-                  <label for="band-hours" class="mb-1.5 block text-xs text-fog"
-                    >Hours before</label
-                  >
-                  <input
-                    id="band-hours"
-                    type="number"
-                    min="1"
-                    max="12"
-                    value="8"
-                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
-                  />
-                  <p class="mt-1 text-[11px] text-fog">
-                    Only trains in this window
-                  </p>
-                </div>
-                <div>
-                  <label for="start" class="mb-1.5 block text-xs text-fog"
-                    >Start looking from</label
-                  >
-                  <input
-                    id="start"
-                    type="date"
-                    class="w-full rounded-lg border border-line bg-ink/40 px-3 py-2.5 text-sm outline-none ring-vr/40 transition focus:border-vr focus:ring-2"
-                  />
-                  <p class="mt-1 text-[11px] text-fog">
-                    Leave empty to start tomorrow
-                  </p>
-                </div>
-              </div>
-              <p
-                id="range-preview"
-                class="mt-3 rounded-md border border-line/80 bg-ink/60 px-3 py-2 text-xs leading-relaxed text-fog"
-              ></p>
-            </section>
-
-            <section>
-              <h2
-                class="mb-3 text-xs font-medium uppercase tracking-wider text-fog"
-              >
-                Who’s travelling?
-              </h2>
-              <div
-                class="inline-flex rounded-lg border border-line p-0.5"
-                role="group"
-                aria-label="Passenger type"
-              >
-                <button
-                  type="button"
-                  class="seg-btn rounded-md border border-transparent px-4 py-2 text-sm transition"
-                  data-passenger="adult"
-                  aria-pressed="true"
-                >
-                  Adult
-                </button>
-                <button
-                  type="button"
-                  class="seg-btn rounded-md border border-transparent px-4 py-2 text-sm transition"
-                  data-passenger="student"
-                  aria-pressed="false"
-                >
-                  Student
+                  <span id="copy-label">Copy</span>
                 </button>
               </div>
-            </section>
-          </form>
 
-          <div class="mt-8 border-t border-line pt-6">
-            <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <p class="text-xs font-medium uppercase tracking-wider text-fog">
-                Your command
-              </p>
-              <button
-                type="button"
-                id="copy-btn"
-                class="inline-flex items-center gap-1.5 font-mono text-xs text-vr transition hover:text-paper"
+              <pre
+                class="overflow-x-auto shadow-inset rounded-xl border border-line bg-ink/40 p-4 font-mono text-[13px] leading-relaxed text-paper"
+              ><code id="command-output"></code></pre>
+
+              <ol
+                class="mt-4 list-decimal space-y-1.5 pl-4 text-xs leading-relaxed text-fog"
               >
-                <svg
-                  class="h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-                <span id="copy-label">Copy</span>
-              </button>
+                <li>Copy the command above.</li>
+                <li>Open Terminal (Mac) or Command Prompt (Windows).</li>
+                <li>
+                  Make sure you are in the
+                  <code
+                    class="rounded bg-ink/60 px-1 py-0.5 font-mono text-[11px] text-vr"
+                    >VR-ticket-miner</code
+                  >
+                  folder, then paste and press Enter.
+                </li>
+              </ol>
             </div>
+          </main>
 
-            <pre
-              class="overflow-x-auto rounded-xl border border-line bg-ink/40 p-4 font-mono text-[13px] leading-relaxed text-paper"
-            ><code id="command-output"></code></pre>
-
-            <ol
-              class="mt-4 list-decimal space-y-1.5 pl-4 text-xs leading-relaxed text-fog"
+          <aside class="space-y-4 lg:pt-2">
+            <div
+              class="rounded-xl border border-line shadow-inset bg-panel/40 p-4 backdrop-blur"
             >
-              <li>Copy the command above.</li>
-              <li>Open Terminal (Mac) or Command Prompt (Windows).</li>
-              <li>
-                Make sure you are in the
-                <code
-                  class="rounded bg-ink/60 px-1 py-0.5 font-mono text-[11px] text-vr"
-                  >VR-ticket-miner</code
-                >
-                folder, then paste and press Enter.
-              </li>
-            </ol>
-          </div>
-        </main>
+              <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
+                How this works
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-fog">
+                VR’s website only lets you search one day at a time. This tool
+                checks <span class="text-paper">14 days</span> for you. Use
+                <span class="text-paper">4h window</span> to keep trips arriving
+                in the four hours before your deadline (e.g. by 14:00 → between
+                <span class="text-paper">10:01</span> and
+                <span class="text-paper">14:00</span>), or
+                <span class="text-paper">Any time</span> for the cheapest trip
+                that day regardless of arrival.
+              </p>
+            </div>
+            <div
+              class="rounded-xl border border-line shadow-inset bg-panel/50 p-4 backdrop-blur"
+            >
+              <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
+                Station names
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-fog">
+                Type a city name as you would on vr.fi: Helsinki, Tampere, Oulu,
+                and so on. Suggestions appear as you type.
+              </p>
+            </div>
+            <a
+              href="https://www.vr.fi/junaliput#osta-lippuja"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block rounded-xl border shadow-insetG border-lineBright/80 bg-vrDim/10 backdrop-blur px-4 py-3 text-sm text-paper transition hover:border-vr/50"
+            >
+              Official VR ticket search ↗
+            </a>
+          </aside>
+        </div>
 
-        <aside class="space-y-4 lg:pt-2">
-          <div
-            class="rounded-xl border border-line bg-panel/40 p-4 backdrop-blur"
-          >
-            <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
-              How this works
-            </h3>
-            <p class="mt-2 text-sm leading-relaxed text-fog">
-              VR’s website only lets you search one day at a time. This tool
-              checks <span class="text-paper">14 days</span> for you and keeps
-              trains that arrive by your chosen time; for example, with an
-              8-hour window and arrive-by 14:00, arrivals between
-              <span class="text-paper">06:01</span> and
-              <span class="text-paper">14:00</span>.
-            </p>
-          </div>
-          <div
-            class="rounded-xl border border-line bg-panel/50 p-4 backdrop-blur"
-          >
-            <h3 class="text-xs font-medium uppercase tracking-wider text-fog">
-              Station names
-            </h3>
-            <p class="mt-2 text-sm leading-relaxed text-fog">
-              Type a city name as you would on vr.fi: Helsinki, Tampere, Oulu,
-              and so on. Suggestions appear as you type.
-            </p>
-          </div>
-          <a
-            href="https://www.vr.fi/junaliput#osta-lippuja"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block rounded-xl border border-lineBright/40 bg-vrDim/30 backdrop-blur px-4 py-3 text-sm text-paper transition hover:border-vr/50"
-          >
-            Official VR ticket search ↗
-          </a>
-        </aside>
+        <footer class="mt-10 text-center text-xs text-fog">
+          VR Ticket Miner
+        </footer>
       </div>
-
-      <footer class="mt-10 text-center text-xs text-fog">
-        VR Ticket Miner
-      </footer>
-    </div>
+    </section>
 
     <script>
       const $ = (id) => document.getElementById(id);
@@ -336,14 +394,18 @@
       const fromInput = $("from");
       const toInput = $("to");
       const arriveInput = $("arrive");
-      const bandInput = $("band-hours");
+      const arriveWrap = $("arrive-wrap");
+      const arrivalModeHint = $("arrival-mode-hint");
       const startInput = $("start");
+      const directOnlyInput = $("direct-only");
       const output = $("command-output");
       const rangePreview = $("range-preview");
       const copyBtn = $("copy-btn");
       const copyLabel = $("copy-label");
 
       let passenger = "adult";
+      /** @type {"window" | "any"} */
+      let arrivalMode = "window";
 
       function tomorrowIso() {
         const d = new Date();
@@ -377,23 +439,36 @@
         return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
       }
 
+      function bandStartClock(arriveClock) {
+        const [h, m] = arriveClock.split(":").map((n) => parseInt(n, 10));
+        const total = h * 60 + m - 4 * 60;
+        const mins = ((total % (24 * 60)) + 24 * 60) % (24 * 60);
+        const hh = String(Math.floor(mins / 60)).padStart(2, "0");
+        const mm = String(mins % 60).padStart(2, "0");
+        return `${hh}:${mm}`;
+      }
+
       function buildArgs() {
         const from = fromInput.value.trim() || "Helsinki";
         const to = toInput.value.trim() || "Tampere";
         const arrive = formatArrive(arriveInput.value);
-        const band = bandInput.value || "8";
         const start = startInput.value;
 
         const parts = [
           "search",
           `--from ${shellQuote(from)}`,
           `--to ${shellQuote(to)}`,
-          `--arrive ${arrive}`,
         ];
 
+        if (arrivalMode === "any") {
+          parts.push("--band-hours 0");
+        } else {
+          parts.push(`--arrive ${arrive}`, "--band-hours 4");
+        }
+
         if (passenger !== "adult") parts.push(`--passenger ${passenger}`);
-        if (band !== "8") parts.push(`--band-hours ${band}`);
         if (start) parts.push(`--start ${start}`);
+        if (directOnlyInput.checked) parts.push("--direct-only");
 
         return parts.join(" ");
       }
@@ -401,7 +476,30 @@
       function updateRangePreview() {
         const first = startInput.value || tomorrowIso();
         const last = addDaysIso(first, 13);
-        rangePreview.textContent = `We'll check 14 days: ${formatNiceDate(first)} – ${formatNiceDate(last)}.`;
+        const range = `We'll check 14 days: ${formatNiceDate(first)} – ${formatNiceDate(last)}.`;
+        if (arrivalMode === "any") {
+          arrivalModeHint.textContent =
+            "Keeps the cheapest trip each day, no matter when it arrives.";
+          rangePreview.textContent = `${range} Arrival time is not filtered.`;
+          return;
+        }
+        const arrive = formatArrive(arriveInput.value);
+        const startClock = bandStartClock(arrive);
+        arrivalModeHint.textContent = `Trips must arrive after ${startClock} and by ${arrive} (4-hour window).`;
+        rangePreview.textContent = range;
+      }
+
+      function setArrivalMode(mode) {
+        arrivalMode = mode;
+        const windowMode = mode === "window";
+        document.querySelectorAll("[data-arrival-mode]").forEach((btn) => {
+          const on = btn.dataset.arrivalMode === mode;
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        arriveInput.disabled = !windowMode;
+        arriveWrap.classList.toggle("opacity-45", !windowMode);
+        arriveWrap.classList.toggle("pointer-events-none", !windowMode);
+        updateCommand();
       }
 
       function updateCommand() {
@@ -418,14 +516,22 @@
         updateCommand();
       }
 
-      [fromInput, toInput, arriveInput, bandInput, startInput].forEach((el) => {
-        el.addEventListener("input", updateCommand);
-        el.addEventListener("change", updateCommand);
-      });
+      [fromInput, toInput, arriveInput, startInput, directOnlyInput].forEach(
+        (el) => {
+          el.addEventListener("input", updateCommand);
+          el.addEventListener("change", updateCommand);
+        },
+      );
 
       document.querySelectorAll("[data-passenger]").forEach((btn) => {
         btn.addEventListener("click", () =>
           setPassenger(btn.dataset.passenger),
+        );
+      });
+
+      document.querySelectorAll("[data-arrival-mode]").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          setArrivalMode(btn.dataset.arrivalMode),
         );
       });
 
@@ -447,7 +553,7 @@
       });
 
       setPassenger("adult");
-      updateCommand();
+      setArrivalMode("window");
     </script>
   </body>
 </html>

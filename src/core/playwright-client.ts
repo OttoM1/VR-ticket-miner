@@ -238,6 +238,7 @@ export class PlaywrightVrClient {
           return label ? [label] : [];
         });
         const tier = inferTier(option);
+        const legCount = legs.length > 0 ? legs.length : 1;
 
         trips.push(
           tripFromIsoRange(
@@ -245,7 +246,8 @@ export class PlaywrightVrClient {
             option.arrivalTime,
             trains.join(" + ") || "—",
             option.totalPrice,
-            tier
+            tier,
+            legCount
           )
         );
       }

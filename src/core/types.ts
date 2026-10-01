@@ -3,7 +3,10 @@ import type { PassengerCategory } from "./passengers.js";
 /** VR ticket tier names as returned by the booking API. */
 export type TicketTier = "Basic" | "Eco" | "Extra";
 
-/** Arrival band: trips must arrive in (target − bandHours, target]. */
+/**
+ * Arrival band: trips must arrive in (target − bandHours, target].
+ * bandHours 0 disables the filter (any arrival time that day).
+ */
 export interface ArrivalWindow {
   hour: number;
   minute: number;
@@ -25,6 +28,8 @@ export interface TripSearchParams {
   arrivalWindow?: ArrivalWindow;
   /** When true, search for return journeys (destination → origin). */
   returnTrip?: boolean;
+  /** When true, drop trips that require a train change (more than one leg). */
+  directOnly?: boolean;
 }
 
 export interface TicketOffer {
@@ -38,6 +43,8 @@ export interface TripResult {
   arrivalTime: Date;
   durationMinutes: number;
   trainNumber: string;
+  /** Number of train legs; 1 means direct (no changes). */
+  legCount: number;
   offers: TicketOffer[];
   /** Cheapest offer across all tiers for this trip. */
   cheapestOffer: TicketOffer;
