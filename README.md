@@ -12,7 +12,9 @@ VR Ticket Miner is an open-source "vibe" project; bug reports, documentation imp
 
 Find the cheapest VR train ticket for your route by scanning 14 days at once, instead of clicking through [vr.fi/junaliput](https://www.vr.fi/junaliput#osta-lippuja) one date at a time.
 
-You pick origin, destination, passenger type (currently only adult or student), and when you need to **arrive**. The miner queries each of the next 14 days, keeps only trips that land inside an eight-hour arrival window and prints the cheapest option per day plus the best deal overall.
+You pick origin, destination, passenger type (adult or student), and how strictly to filter **arrival time**. For each of the next 14 days the miner finds trips on your route, applies your filters, and prints the cheapest match per day plus the best deal overall. Optional **direct-only** mode skips connections that require a train change.
+
+The hosted [search builder](https://ottom1.github.io/VR-ticket-miner/) covers the common cases: **4h window** (arrive within four hours before your deadline) or **Any time** (cheapest trip that day regardless of arrival), plus direct trains only and a wider station list.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-success?labelColor=2B2D42)](LICENCE)
 [![Node 20+](https://img.shields.io/badge/node-20%2B-339933?labelColor=2B2D42)](https://nodejs.org/)
@@ -47,7 +49,14 @@ npx serve
 Then:
 
 ```bash
-vr-miner search --from HKI --to TKU --arrive 09:30 --passenger student
+# Arrive by 09:30, only trips landing in the prior 4 hours
+vr-miner search --from Helsinki --to Turku --arrive 09:30 --band-hours 4 --passenger student
+
+# Cheapest trip each day, any arrival time
+vr-miner search --from Helsinki --to Oulu --band-hours 0
+
+# Direct trains only (no changes)
+vr-miner search --from Helsinki --to Tampere --arrive 14:00 --direct-only
 ```
 
 ### Prefer a generated command instead?
@@ -110,10 +119,16 @@ VR’s site makes you search one day at a time. This tool automates that loop.
 
 For each of 14 consecutive days (starting tomorrow, or from `--start`):
 
-1. Request trips for your route and passenger type.
-2. Drop anything that arrives outside the window `(target − band, target]`. By default the band is eight hours ending at your `--arrive` time — e.g. `--arrive 14:00` keeps arrivals between 06:01 and 14:00.
-3. Take the cheapest remaining trip that day.
-4. After all 14 days, highlight the single best price across the week.
+1. Request trips for your route and passenger type (live via Playwright on vr.fi, or `--mock` for offline tests).
+2. **Arrival filter** (optional):
+   - **`--band-hours 0`** — keep all trips that day; pick the cheapest by price.
+   - **`--band-hours 4`** (CLI default) with **`--arrive HH:mm`** — keep only trips whose arrival falls in `(target − 4h, target]` on that calendar day. Example: `--arrive 14:00` keeps arrivals after 10:00 and by 14:00.
+   - Other values between 1 and 24 are accepted for advanced use.
+3. With **`--direct-only`**, drop multi-leg connections (anything with more than one train leg).
+4. Take the cheapest remaining trip that day.
+5. After all 14 days, highlight the single best price across the range.
+
+List supported cities with `vr-miner stations`.
 
 ## License
 

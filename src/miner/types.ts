@@ -17,6 +17,8 @@ export interface WeekMinerOptions {
   weekNumber?: number;
   year?: number;
   returnTrip?: boolean;
+  /** Only keep trips with a single train leg (no changes). */
+  directOnly?: boolean;
   requestDelayMs?: number;
   mock?: boolean;
 }

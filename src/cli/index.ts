@@ -19,7 +19,7 @@ program
 program
   .command("search")
   .description(
-    "Search cheapest tickets per day for trips arriving in an 8-hour window"
+    "Search cheapest tickets per day (4h arrival window or any time)"
   )
   .requiredOption(
     "--from <station>",
@@ -29,9 +29,9 @@ program
     "--to <station>",
     "Destination station (name or code, e.g. Tampere or TKU)"
   )
-  .requiredOption(
+  .option(
     "--arrive <HH:mm>",
-    "Target arrival time; keeps trips arriving within the band ending at this time"
+    "Latest arrival time when using a band (required unless --band-hours 0)"
   )
   .option(
     "--passenger <type>",
@@ -40,19 +40,23 @@ program
   )
   .option(
     "--band-hours <n>",
-    "Arrival band width in hours (default: 8)",
+    "Hours before --arrive to include (default: 4). Use 0 for any arrival that day",
     (v) => parseInt(v, 10),
-    8
+    4
   )
   .option(
     "--start <date>",
-    "First day of the 7-day window (YYYY-MM-DD). Default: tomorrow"
+    "First day of the 14-day window (YYYY-MM-DD). Default: tomorrow"
   )
-  .option("--week <number>", "Legacy: ISO week number instead of rolling 7 days", (v) =>
+  .option("--week <number>", "Legacy: ISO week number instead of rolling 14 days", (v) =>
     parseInt(v, 10)
   )
   .option("--year <number>", "Year for --week", (v) => parseInt(v, 10))
   .option("--return", "Search return journeys (destination → origin)")
+  .option(
+    "--direct-only",
+    "Only include direct trains (no changes along the route)"
+  )
   .option("--mock", "Use mocked VR responses (no browser)")
   .option(
     "--delay <ms>",
@@ -77,23 +81,39 @@ program
       process.exit(1);
     }
 
-    let arrive;
-    try {
-      arrive = parseArrivalTime(options.arrive);
-    } catch (err) {
-      console.error(err instanceof Error ? err.message : String(err));
+    const bandHours = options.bandHours;
+    if (!Number.isFinite(bandHours) || bandHours < 0 || bandHours > 24) {
+      console.error("--band-hours must be between 0 and 24");
       process.exit(1);
+    }
+
+    let arriveHour = 0;
+    let arriveMinute = 0;
+    if (bandHours > 0) {
+      if (!options.arrive) {
+        console.error("--arrive is required when --band-hours is greater than 0");
+        process.exit(1);
+      }
+      try {
+        const parsed = parseArrivalTime(options.arrive);
+        arriveHour = parsed.hour;
+        arriveMinute = parsed.minute;
+      } catch (err) {
+        console.error(err instanceof Error ? err.message : String(err));
+        process.exit(1);
+      }
     }
 
     await runSearch({
       from: options.from,
       to: options.to,
       passenger,
-      arrive: `${String(arrive.hour).padStart(2, "0")}:${String(arrive.minute).padStart(2, "0")}`,
-      bandHours: options.bandHours,
+      arrive: `${String(arriveHour).padStart(2, "0")}:${String(arriveMinute).padStart(2, "0")}`,
+      bandHours,
       startDate,
       week: options.week,
       returnTrip: options.return ?? false,
+      directOnly: options.directOnly ?? false,
       mock: options.mock ?? false,
       delay: options.delay,
       year: options.year,

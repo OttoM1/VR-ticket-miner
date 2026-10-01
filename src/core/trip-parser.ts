@@ -32,13 +32,22 @@ export function mapTierLabel(label: string): TicketTier {
   return TIER_ALIASES[key] ?? "Basic";
 }
 
+/** Infer leg count from a joined train label (e.g. "IC 1 + IC 5"). */
+export function legCountFromTrainLabel(trainNumber: string): number {
+  const label = trainNumber.trim();
+  if (!label || label === "—") return 1;
+  const parts = label.split(/\s*\+\s*/).filter((p) => p.length > 0);
+  return parts.length > 0 ? parts.length : 1;
+}
+
 export function buildTripFromTimes(
   day: Date,
   departureClock: string,
   arrivalClock: string,
   trainNumber: string,
   priceCents: number,
-  tier: TicketTier = "Basic"
+  tier: TicketTier = "Basic",
+  legCount?: number
 ): TripResult | null {
   const departureTime = parseClockOnDate(day, departureClock);
   const arrivalTime = parseClockOnDate(day, arrivalClock);
@@ -58,6 +67,7 @@ export function buildTripFromTimes(
     arrivalTime: arrival,
     durationMinutes: differenceInMinutes(arrival, departureTime),
     trainNumber,
+    legCount: legCount ?? legCountFromTrainLabel(trainNumber),
     offers,
     cheapestOffer: offers[0]!,
   };
@@ -69,7 +79,8 @@ export function tripFromIsoRange(
   arrivalIso: string,
   trainNumber: string,
   priceCents: number,
-  tier: TicketTier = "Basic"
+  tier: TicketTier = "Basic",
+  legCount?: number
 ): TripResult {
   const departureTime = parseISO(departureIso);
   const arrivalTime = parseISO(arrivalIso);
@@ -79,6 +90,7 @@ export function tripFromIsoRange(
     arrivalTime,
     durationMinutes: differenceInMinutes(arrivalTime, departureTime),
     trainNumber,
+    legCount: legCount ?? legCountFromTrainLabel(trainNumber),
     offers,
     cheapestOffer: offers[0]!,
   };

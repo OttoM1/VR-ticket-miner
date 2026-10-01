@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import Table from "cli-table3";
 import { format } from "date-fns";
+import { isArrivalFilterActive } from "../../core/arrival-window.js";
 import { formatStation } from "../../core/stations.js";
 import type { DayBestOption, WeekMiningResult } from "../../miner/types.js";
 
@@ -19,9 +20,12 @@ function formatDate(date: Date): string {
 
 function formatBand(result: WeekMiningResult): string {
   const { hour, minute, bandHours } = result.arrivalWindow;
+  if (!isArrivalFilterActive(result.arrivalWindow)) {
+    return "any arrival time";
+  }
   const hh = String(hour).padStart(2, "0");
   const mm = String(minute).padStart(2, "0");
-  return `arrive by ${hh}:${mm} (${bandHours}h band)`;
+  return `arrive by ${hh}:${mm} (${bandHours}h window)`;
 }
 
 export function printWeekSummary(result: WeekMiningResult): void {

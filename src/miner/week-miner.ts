@@ -71,6 +71,7 @@ export class WeekMiner {
               date,
               passengerType: this.options.passengerType,
               arrivalWindow: this.options.arrivalWindow,
+              directOnly: this.options.directOnly,
             };
 
             const dayResult = await this.client.searchDay(searchParams);
@@ -170,6 +171,7 @@ function emptyTrip(date: Date): TripResult {
     arrivalTime: date,
     durationMinutes: 0,
     trainNumber: "—",
+    legCount: 1,
     offers: [],
     cheapestOffer: { tier: "Basic", priceCents: Infinity, currency: "EUR" },
   };
