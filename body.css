@@ -1,5 +1,5 @@
 body,html {
-    overflow-x: hidden;
+    overflow: hidden;
     min-height: 100svh;
     background: rgb(0, 0, 0);
     background-color: black;
@@ -59,7 +59,38 @@ left: 0;
     transform: scaleX(1) translateX(0);
   }
 }
+@keyframes bodyPulse690 {
+    0% {
+        transform: scaleX(1) translateX(0);
+    }
 
+    25% {
+        transform: scaleX(1.09) translateX(8px);
+    }
+
+    50% {
+        transform: scaleX(1.18) translateX(18px);
+    }
+
+    75% {
+        transform: scaleX(1.09) translateX(8px);
+    }
+
+    100% {
+        transform: scaleX(1) translateX(0);
+    }
+}
+
+@media screen and (min-width: 691px) {
+    .body::before {
+            animation: bodyPulse 18s linear infinite;
+        }
+}
+@media screen and (man-width: 690px) {
+    .body::before {
+        animation: bodyPulse690 16s linear infinite;
+    }
+}
     .body::before {
         animation: bodyPulse 18s linear infinite;
         content: '';
@@ -265,6 +296,8 @@ left: 0;
 
     .app-shell .time-grid {
         grid-template-columns: 1fr;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .app-shell pre code {

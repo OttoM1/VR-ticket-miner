@@ -33,6 +33,15 @@ export function mapTierLabel(label: string): TicketTier {
 }
 
 /** Infer leg count from a joined train label (e.g. "IC 1 + IC 5"). */
+/** VR uses 0 € when a tier is not sold for that connection. */
+export function isPurchasablePriceCents(priceCents: number): boolean {
+  return Number.isFinite(priceCents) && priceCents > 0;
+}
+
+export function isTripPurchasable(trip: TripResult): boolean {
+  return isPurchasablePriceCents(trip.cheapestOffer.priceCents);
+}
+
 export function legCountFromTrainLabel(trainNumber: string): number {
   const label = trainNumber.trim();
   if (!label || label === "—") return 1;
@@ -49,6 +58,7 @@ export function buildTripFromTimes(
   tier: TicketTier = "Basic",
   legCount?: number
 ): TripResult | null {
+  if (!isPurchasablePriceCents(priceCents)) return null;
   const departureTime = parseClockOnDate(day, departureClock);
   const arrivalTime = parseClockOnDate(day, arrivalClock);
   if (!departureTime || !arrivalTime) return null;

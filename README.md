@@ -105,6 +105,7 @@ Manual run:
 ```bash
 bash bash/env.sh          # env only
 npm run check-bash        # env + all bash checks
+npm run go # starts the localhost
 ```
 
 #### Having issues with installation?
