@@ -43,6 +43,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - [`bash/env.sh`](bash/env.sh) broken `if`/`fi` and `exec $SHELL` preventing scripted use; now exits with proper status codes.
 - Folder-open checks **appearing to hang** when `run_all.sh` started twice (task + Terminals Manager `autorun`); `autorun` disabled, `instanceLimit: 1`, and run lock added.
 - Duplicate Pasila / Seinäjoki entries in the station resolver.
+- Bug removed: trains that are fully booked/not available were flagged as "free/0€" and not ignored.
 
 ### Removed
 

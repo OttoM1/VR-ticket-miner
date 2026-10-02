@@ -1,5 +1,6 @@
 import axios, { type AxiosError } from "axios";
 import { filterTripsByArrivalWindow } from "./arrival-window.js";
+import { isTripPurchasable } from "./trip-parser.js";
 import { generateMockDayResult } from "./mock-data.js";
 import { passengerPriceMultiplier } from "./passengers.js";
 import { PlaywrightVrClient } from "./playwright-client.js";
@@ -110,7 +111,7 @@ export async function postGraphqlSearch(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "User-Agent": "vr-ticket-miner/0.1.0",
+        "User-Agent": "vr-ticket-miner/0.3.0",
       },
     });
     return response.data;
@@ -161,6 +162,7 @@ export function finalizeDayResult(
   if (params.directOnly) {
     trips = trips.filter((t) => t.legCount === 1);
   }
+  trips = trips.filter(isTripPurchasable);
   if (options.adjustPassengerPricing) {
     trips = applyPassengerPricing({ ...result, trips }, params).trips;
   }

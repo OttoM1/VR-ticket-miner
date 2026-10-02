@@ -1,6 +1,6 @@
 {
   "name": "vr-ticket-miner",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "CLI tool to find the cheapest VR train tickets for a route across an entire week",
   "type": "module",
   "bin": {

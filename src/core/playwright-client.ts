@@ -6,6 +6,7 @@ import {
 import {
   buildTripFromTimes,
   mapTierLabel,
+  isPurchasablePriceCents,
   parsePriceToCents,
   tripFromIsoRange,
 } from "./trip-parser.js";
@@ -180,7 +181,7 @@ export class PlaywrightVrClient {
       const arrivalClock = extractClock(arrival);
       if (!departureClock || !arrivalClock) continue;
       const priceCents = parsePriceToCents(price);
-      if (priceCents == null) continue;
+      if (priceCents == null || !isPurchasablePriceCents(priceCents)) continue;
       const trainLabel = normalizeTrainLabel(train);
       const key = `${departureClock}-${arrivalClock}-${trainLabel}-${priceCents}`;
       if (seen.has(key)) continue;
@@ -214,7 +215,8 @@ export class PlaywrightVrClient {
           !isRecord(option) ||
           typeof option.departureTime !== "string" ||
           typeof option.arrivalTime !== "string" ||
-          typeof option.totalPrice !== "number"
+          typeof option.totalPrice !== "number" ||
+          !isPurchasablePriceCents(option.totalPrice)
         ) {
           continue;
         }

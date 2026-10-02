@@ -225,7 +225,10 @@
                       Any time
                     </button>
                   </div>
-                  <p id="arrival-mode-hint" class="mt-2 text-[11px] text-fog"></p>
+                  <p
+                    id="arrival-mode-hint"
+                    class="mt-2 text-[11px] text-fog"
+                  ></p>
                 </div>
                 <div class="time-grid grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div id="arrive-wrap">
@@ -302,7 +305,8 @@
                 <button
                   type="button"
                   id="copy-btn"
-                  class="inline-flex items-center gap-1.5 font-mono text-xs text-vr transition hover:text-paper"
+                  disabled
+                  class="inline-flex items-center gap-1.5 font-mono text-xs text-vr transition hover:text-paper disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <svg
                     class="h-3.5 w-3.5"
@@ -320,6 +324,12 @@
                   <span id="copy-label">Copy</span>
                 </button>
               </div>
+
+              <p
+                id="command-validation"
+                class="mb-3 rounded-md border border-line/80 bg-ink/60 px-3 py-2 text-xs leading-relaxed text-fog"
+                role="status"
+              ></p>
 
               <pre
                 class="overflow-x-auto shadow-inset rounded-xl border border-line bg-ink/40 p-4 font-mono text-[13px] leading-relaxed text-paper"
@@ -377,7 +387,7 @@
               rel="noopener noreferrer"
               class="block rounded-xl border shadow-insetG border-lineBright/80 bg-vrDim/10 backdrop-blur px-4 py-3 text-sm text-paper transition hover:border-vr/50"
             >
-              Official VR ticket search ↗
+              Official VR ticket search →
             </a>
           </aside>
         </div>
@@ -402,6 +412,11 @@
       const rangePreview = $("range-preview");
       const copyBtn = $("copy-btn");
       const copyLabel = $("copy-label");
+      const commandValidation = $("command-validation");
+
+      const stationNames = [
+        ...document.querySelectorAll("#stations option"),
+      ].map((opt) => opt.value);
 
       let passenger = "adult";
       /** @type {"window" | "any"} */
@@ -433,10 +448,77 @@
         return `"${s.replace(/"/g, '\\"')}"`;
       }
 
+      function normalizeStationName(value) {
+        return value.trim().toLocaleLowerCase("fi");
+      }
+
+      function resolveStationLabel(value) {
+        const query = normalizeStationName(value);
+        if (!query) return null;
+        const exact = stationNames.find(
+          (name) => normalizeStationName(name) === query,
+        );
+        return exact ?? null;
+      }
+
       function formatArrive(timeValue) {
-        if (!timeValue) return "14:00";
+        if (!timeValue) return null;
         const [h, m] = timeValue.split(":");
+        if (h === undefined || m === undefined) return null;
         return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
+      }
+
+      function validateForm() {
+        const issues = [];
+        const fromRaw = fromInput.value.trim();
+        const toRaw = toInput.value.trim();
+
+        if (!fromRaw) issues.push("Choose a departure station.");
+        else if (!resolveStationLabel(fromRaw)) {
+          issues.push(
+            "Departure station must match a suggestion (e.g. Helsinki).",
+          );
+        }
+
+        if (!toRaw) issues.push("Choose a destination station.");
+        else if (!resolveStationLabel(toRaw)) {
+          issues.push(
+            "Destination station must match a suggestion (e.g. Tampere).",
+          );
+        }
+
+        if (
+          fromRaw &&
+          toRaw &&
+          normalizeStationName(fromRaw) === normalizeStationName(toRaw)
+        ) {
+          issues.push("Departure and destination must be different.");
+        }
+
+        if (arrivalMode === "window") {
+          if (!arriveInput.value) {
+            issues.push("Set an arrive-by time for the 4-hour window.");
+          } else if (!formatArrive(arriveInput.value)) {
+            issues.push("Arrive-by time is not valid.");
+          }
+        }
+
+        if (startInput.value) {
+          const d = new Date(`${startInput.value}T12:00:00`);
+          if (Number.isNaN(d.getTime())) {
+            issues.push("Start date is not valid.");
+          } else {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (d < today) {
+              issues.push("Start date must be today or later.");
+            }
+          }
+        }
+
+        if (!passenger) issues.push("Choose adult or student.");
+
+        return issues;
       }
 
       function bandStartClock(arriveClock) {
@@ -449,9 +531,11 @@
       }
 
       function buildArgs() {
-        const from = fromInput.value.trim() || "Helsinki";
-        const to = toInput.value.trim() || "Tampere";
-        const arrive = formatArrive(arriveInput.value);
+        const issues = validateForm();
+        if (issues.length > 0) return null;
+
+        const from = resolveStationLabel(fromInput.value.trim());
+        const to = resolveStationLabel(toInput.value.trim());
         const start = startInput.value;
 
         const parts = [
@@ -463,6 +547,7 @@
         if (arrivalMode === "any") {
           parts.push("--band-hours 0");
         } else {
+          const arrive = formatArrive(arriveInput.value);
           parts.push(`--arrive ${arrive}`, "--band-hours 4");
         }
 
@@ -484,6 +569,12 @@
           return;
         }
         const arrive = formatArrive(arriveInput.value);
+        if (!arrive) {
+          arrivalModeHint.textContent =
+            "Set an arrive-by time to define the 4-hour window.";
+          rangePreview.textContent = range;
+          return;
+        }
         const startClock = bandStartClock(arrive);
         arrivalModeHint.textContent = `Trips must arrive after ${startClock} and by ${arrive} (4-hour window).`;
         rangePreview.textContent = range;
@@ -503,7 +594,24 @@
       }
 
       function updateCommand() {
-        output.textContent = `vr-miner ${buildArgs()}`;
+        const issues = validateForm();
+        const args = buildArgs();
+
+        if (args) {
+          commandValidation.textContent =
+            "Command ready — copy and run it in the VR-ticket-miner folder.";
+          commandValidation.classList.remove("border-vr/40", "text-paper");
+          output.textContent = `vr-miner ${args}`;
+          copyBtn.disabled = false;
+        } else {
+          commandValidation.innerHTML = issues
+            .map((msg) => `• ${msg}`)
+            .join("<br />");
+          commandValidation.classList.add("border-vr/40", "text-paper");
+          output.textContent = "Complete the form above to generate a command.";
+          copyBtn.disabled = true;
+        }
+
         updateRangePreview();
       }
 
@@ -543,6 +651,7 @@
       });
 
       copyBtn.addEventListener("click", async () => {
+        if (copyBtn.disabled || validateForm().length > 0) return;
         try {
           await navigator.clipboard.writeText(output.textContent);
           copyLabel.textContent = "Copied";

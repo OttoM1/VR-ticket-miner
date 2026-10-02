@@ -14,7 +14,7 @@ program
   .description(
     "Find the cheapest VR train tickets for a route across 14 days (vr.fi/junaliput)"
   )
-  .version("0.1.0");
+  .version("0.3.0");
 
 program
   .command("search")
